@@ -7,12 +7,12 @@ Pod::Spec.new do |s|
   s.author   = { 'Brad Larson' => 'contact@sunsetlakesoftware.com' }
   s.source   = { :git => 'https://github.com/BradLarson/GPUImage2.git', :tag => "#{s.version}" }
 
-  s.source_files = 'framework/Source/**/*.{h,swift}'
-  s.resources = 'framework/Resources/*.png'
-  s.requires_arc = true
-  s.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
-
   s.subspec 'iOS' do |mobile|
+    mobile.source_files = 'framework/Source/**/*.{h,swift}'
+    mobile.resources = 'framework/Resources/*.png'
+    mobile.requires_arc = true
+    mobile.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
+
     mobile.ios.deployment_target = '5.0'
     mobile.ios.exclude_files     = 'framework/Source/Mac',
                                    'framework/Source/Linux'
@@ -27,6 +27,11 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Mac' do |mac|
+    mac.source_files = 'framework/Source/**/*.{h,swift}'
+    mac.resources = 'framework/Resources/*.png'
+    mac.requires_arc = true
+    mac.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
+
     mac.osx.deployment_target = '10.6'
     mac.osx.exclude_files = 'framework/Source/iOS',
                             'framework/Source/Linux',
