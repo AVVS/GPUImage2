@@ -16,11 +16,13 @@ Pod::Spec.new do |s|
   s.ios.exclude_files = 'framework/Source/Mac',
                         'framework/Source/Linux'
   s.ios.frameworks   = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
+  s.ios.compiler_flags = '-DGLES'
 
   s.tvos.deployment_target = '10.0'
   s.tvos.exclude_files = 'framework/Source/Mac',
                          'framework/Source/Linux'
   s.tvos.frameworks   = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
+  s.tvos.compiler_flags = '-DGLES'
 
   s.osx.deployment_target = '10.6'
   s.osx.exclude_files = 'framework/Source/iOS',
