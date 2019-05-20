@@ -23,8 +23,7 @@ Pod::Spec.new do |s|
                                     'framework/Source/Linux'
     mobile.tvos.frameworks        = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
 
-    mobile.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES',
-      'OTHER_SWIFT_FLAGS' => "$(inherited) -DGLES"}
+    mobile.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES', 'OTHER_SWIFT_FLAGS' => "-DGLES"}
   end
 
   s.subspec 'Mac' do |mac|
