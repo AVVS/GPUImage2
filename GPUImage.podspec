@@ -30,7 +30,7 @@ Pod::Spec.new do |s|
   end
 
   s.subspec 'Mac' do |mac|
-    mac.source_files = 'framework/Source/**/*.{h,swift}'
+    mac.source_files = 'framework/Source/**/*.{swift}'
     mac.resources = 'framework/Resources/*.png'
     mac.requires_arc = true
     mac.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }

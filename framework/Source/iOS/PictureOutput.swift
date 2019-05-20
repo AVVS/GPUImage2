@@ -13,17 +13,17 @@ public class PictureOutput: ImageConsumer {
     public var onlyCaptureNextFrame:Bool = true
     public var keepImageAroundForSynchronousCapture:Bool = false
     var storedFramebuffer:Framebuffer?
-    
+
     public let sources = SourceContainer()
     public let maximumInputs:UInt = 1
     var url:URL!
-    
+
     public init() {
     }
-    
+
     deinit {
     }
-    
+
     public func saveNextFrameToURL(_ url:URL, format:PictureFileFormat) {
         onlyCaptureNextFrame = true
         encodedImageFormat = format
@@ -37,7 +37,7 @@ public class PictureOutput: ImageConsumer {
             }
         }
     }
-    
+
     // TODO: Replace with texture caches
     func cgImageFromFramebuffer(_ framebuffer:Framebuffer) -> CGImage {
         let renderFramebuffer = sharedImageProcessingContext.framebufferCache.requestFramebufferWithProperties(orientation:framebuffer.orientation, size:framebuffer.size)
@@ -46,7 +46,7 @@ public class PictureOutput: ImageConsumer {
         clearFramebufferWithColor(Color.red)
         renderQuadWithShader(sharedImageProcessingContext.passthroughShader, uniformSettings:ShaderUniformSettings(), vertexBufferObject:sharedImageProcessingContext.standardImageVBO, inputTextures:[framebuffer.texturePropertiesForOutputRotation(.noRotation)])
         framebuffer.unlock()
-        
+
         let imageByteSize = Int(framebuffer.size.width * framebuffer.size.height * 4)
         let data = UnsafeMutablePointer<UInt8>.allocate(capacity: imageByteSize)
         glReadPixels(0, 0, framebuffer.size.width, framebuffer.size.height, GLenum(GL_RGBA), GLenum(GL_UNSIGNED_BYTE), data)
@@ -55,52 +55,52 @@ public class PictureOutput: ImageConsumer {
         let defaultRGBColorSpace = CGColorSpaceCreateDeviceRGB()
         return CGImage(width:Int(framebuffer.size.width), height:Int(framebuffer.size.height), bitsPerComponent:8, bitsPerPixel:32, bytesPerRow:4 * Int(framebuffer.size.width), space:defaultRGBColorSpace, bitmapInfo:CGBitmapInfo() /*| CGImageAlphaInfo.Last*/, provider:dataProvider, decode:nil, shouldInterpolate:false, intent:.defaultIntent)!
     }
-    
+
     public func newFramebufferAvailable(_ framebuffer:Framebuffer, fromSourceIndex:UInt) {
         if keepImageAroundForSynchronousCapture {
             storedFramebuffer?.unlock()
             storedFramebuffer = framebuffer
         }
-        
+
         if let imageCallback = imageAvailableCallback {
             let cgImageFromBytes = cgImageFromFramebuffer(framebuffer)
-            
+
             // TODO: Let people specify orientations
             let image = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
-            
+
             imageCallback(image)
-            
+
             if onlyCaptureNextFrame {
                 imageAvailableCallback = nil
             }
         }
-        
+
         if let imageCallback = encodedImageAvailableCallback {
             let cgImageFromBytes = cgImageFromFramebuffer(framebuffer)
             let image = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
             let imageData:Data
             switch encodedImageFormat {
-                case .png: imageData = UIImagePNGRepresentation(image)! // TODO: Better error handling here
-                case .jpeg: imageData = UIImageJPEGRepresentation(image, 0.8)! // TODO: Be able to set image quality
+            case .png: imageData = image.pngData()! // TODO: Better error handling here
+            case .jpeg: imageData = image.jpegData(compressionQuality: 0.8)! // TODO: Be able to set image quality
             }
-            
+
             imageCallback(imageData)
-            
+
             if onlyCaptureNextFrame {
                 encodedImageAvailableCallback = nil
             }
         }
     }
-    
+
     public func synchronousImageCapture() -> UIImage {
         var outputImage:UIImage!
         sharedImageProcessingContext.runOperationSynchronously{
             guard let currentFramebuffer = storedFramebuffer else { fatalError("Synchronous access requires keepImageAroundForSynchronousCapture to be set to true") }
-            
+
             let cgImageFromBytes = cgImageFromFramebuffer(currentFramebuffer)
             outputImage = UIImage(cgImage:cgImageFromBytes, scale:1.0, orientation:.up)
         }
-        
+
         return outputImage
     }
 }
@@ -119,7 +119,7 @@ public extension UIImage {
             input --> operation --> output
         }
     }
-    
+
     public func filterWithPipeline(_ pipeline:(PictureInput, PictureOutput) -> ()) -> UIImage {
         let picture = PictureInput(image:self)
         var outputImage:UIImage?
