@@ -15,12 +15,15 @@ Pod::Spec.new do |s|
 
     mobile.ios.deployment_target = '5.0'
     mobile.ios.exclude_files     = 'framework/Source/Mac',
-                                   'framework/Source/Linux'
+                                   'framework/Source/Linux',
+                                   'framework/Operations/Shaders/*_GL.swift'
     mobile.ios.frameworks        = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
 
     mobile.tvos.deployment_target = '10.0'
     mobile.tvos.exclude_files     = 'framework/Source/Mac',
-                                    'framework/Source/Linux'
+                                    'framework/Source/Linux',
+                                    'framework/Operations/Shaders/*_GL.swift'
+
     mobile.tvos.frameworks        = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
 
     mobile.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES', 'OTHER_SWIFT_FLAGS' => "-DGLES"}
@@ -39,7 +42,9 @@ Pod::Spec.new do |s|
                             'framework/Source/GPUImageMovieComposition.*',
                             'framework/Source/GPUImageVideoCamera.*',
                             'framework/Source/GPUImageStillCamera.*',
-                            'framework/Source/GPUImageUIElement.*'
+                            'framework/Source/GPUImageUIElement.*',
+                            'framework/Operations/Shaders/*_GLES.swift'
+
     mac.osx.xcconfig = { 'GCC_WARN_ABOUT_RETURN_TYPE' => 'YES' }
   end
 end
