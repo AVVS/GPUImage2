@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.source   = { :git => 'https://github.com/BradLarson/GPUImage2.git', :tag => "#{s.version}" }
 
   s.subspec 'iOS' do |mobile|
-    mobile.source_files = 'framework/Source/**/*.{h,swift}'
+    mobile.source_files = 'framework/Source/**/*.{swift}'
     mobile.resources = 'framework/Resources/*.png'
     mobile.requires_arc = true
     mobile.xcconfig = { 'CLANG_MODULES_AUTOLINK' => 'YES' }
