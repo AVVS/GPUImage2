@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'GPUImage'
-  s.version  = '2.0.0'
+  s.version  = '2.0.1'
   s.license  = 'BSD'
   s.summary  = 'An open source iOS framework for GPU-based image and video processing.'
   s.homepage = 'https://github.com/BradLarson/GPUImage2'
@@ -16,13 +16,13 @@ Pod::Spec.new do |s|
     mobile.ios.deployment_target = '5.0'
     mobile.ios.exclude_files     = 'framework/Source/Mac',
                                    'framework/Source/Linux',
-                                   'framework/Operations/Shaders/*_GL.swift'
+                                   'framework/Operations/Shaders/ConvertedShaders_GL.swift'
     mobile.ios.frameworks        = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
 
     mobile.tvos.deployment_target = '10.0'
     mobile.tvos.exclude_files     = 'framework/Source/Mac',
                                     'framework/Source/Linux',
-                                    'framework/Operations/Shaders/*_GL.swift'
+                                    'framework/Operations/Shaders/ConvertedShaders_GL.swift'
 
     mobile.tvos.frameworks        = ['OpenGLES', 'CoreMedia', 'QuartzCore', 'AVFoundation']
 
@@ -43,7 +43,7 @@ Pod::Spec.new do |s|
                             'framework/Source/GPUImageVideoCamera.*',
                             'framework/Source/GPUImageStillCamera.*',
                             'framework/Source/GPUImageUIElement.*',
-                            'framework/Operations/Shaders/*_GLES.swift'
+                            'framework/Operations/Shaders/ConvertedShaders_GLES.swift'
 
     mac.osx.xcconfig = { 'GCC_WARN_ABOUT_RETURN_TYPE' => 'YES' }
   end
