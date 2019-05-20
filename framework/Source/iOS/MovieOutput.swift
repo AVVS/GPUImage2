@@ -20,8 +20,8 @@ public class MovieOutput: ImageConsumer, AudioEncodingTarget {
     private var videoEncodingIsFinished = false
     private var audioEncodingIsFinished = false
     private var startTime:CMTime?
-    private var previousFrameTime = kCMTimeNegativeInfinity
-    private var previousAudioTime = kCMTimeNegativeInfinity
+    private var previousFrameTime = CMTime.negativeInfinity
+    private var previousAudioTime = CMTime.negativeInfinity
     private var encodingLiveVideo:Bool
     var pixelBuffer:CVPixelBuffer? = nil
     var renderFramebuffer:Framebuffer!
